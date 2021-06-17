@@ -1,0 +1,211 @@
+<html>
+	<head>
+		<title>Se connecter - Neron</title>
+		<link rel="icon" type="image/png" href="https://cdn.neronapp.com/assets/pictures/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta id="viewport" name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.neronapp.com/assets/cascading-style-sheets/Quicksand.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.neronapp.com/assets/cascading-style-sheets/boxicons.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="style.css">
+	</head>
+	<body id="body">
+		<div class="main">
+			<div class="changelang">
+				<p>Français <i class='bx bx-chevron-down'></i></p>
+			</div>
+			<div class="select">
+				<p onclick="window.location='?setlang=en'">English</p>
+				<p onclick="window.location='?setlang=es'">Español</p>
+			</div>
+			<div class="header">
+				<img id="avatar" src="">
+				<h2>Heureux de vous revoir</h2>
+				<p><span id="name" class="trsY50"></span></p>
+			</div>
+			<div class="form">
+				<div class="input">
+					<label id="lb-email">Identifiant ou adresse email</label>
+					<div class="share email">
+						<div>
+							<input type="text" id="input-email" placeholder="" autocomplete="email">
+						</div>
+						<div class="btnemail submited">
+							<i class='bx bx-chevron-right'></i>
+						</div>
+					</div>
+					<span class="slide"></span>
+				</div>
+				<div id="password" class="input display-none">
+					<label id="lb-password">Mot de passe</label>
+					<div class="share password">
+						<div>
+							<input type="password" id="input-password" placeholder="" autocomplete="password">
+						</div>
+						<div class="btnpassword submited">
+							<i class='bx bx-chevron-right'></i>
+						</div>
+					</div>
+					<span class="slide"></span>
+				</div>
+				<div class="loader">
+					<svg viewBox="25 25 50 50">
+						<circle cx="50" cy="50" r="20"></circle>
+					</svg>
+				</div>
+			</div>
+		</div>
+		<script src="https://cdn.neronapp.com/assets/javascript/jquery.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			function checkIfEmailInString(text) {
+			    var re = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+			    return re.test(text);
+			}
+			
+			function checkIsCorrectPassword(text)  {
+			    if((text).length > 6) {
+			        return true;
+			    }
+			    return false;
+			}
+			
+			$('input').on('focus', function() {
+			    document.body.scrollTop += this.getBoundingClientRect().top - 10
+			});
+			
+			let email = null;
+			$( ".btnemail" ).click(function() {
+			    submitEmail();
+			});
+			$('#input-email').focus();
+			function submitEmail() {
+			
+			    let value = $('#input-email').val();
+			    $('.loader').css('display', 'block');
+			    $('.btnemail').removeClass('submited');
+			    $('#input-email').attr('disabled', '');
+			    $('#lb-email').css('color', '#888').html('Identifiant ou adresse email');
+			    var formData = new FormData();
+			    formData.append('email', value);
+			    formData.append('action', 'start_session');
+			    $.ajax({
+			        url: '/login',
+			        type: 'POST',
+			        timeout: 10000,
+			        data: formData,
+			        processData: false, // tell jQuery not to process the data
+			        contentType: false, // tell jQuery not to set contentType
+			        success: function(data) {
+			            data = JSON.parse(data);
+			
+			            if(data.error == null) {
+			                let name = $('#name');
+			                email = value;
+			                name.text(data.name).removeClass('trsY50');
+			                $('#password').removeClass('display-none');
+			                $('.btnemail').remove();
+			                $('.share.email').css('grid-template-columns', '100%');
+			                $('.loader').css('display', 'none');
+			                $('#input-password').focus();
+			                $('#input-email').css('border-radius', '5px');
+			                if(data.image != null) {
+			                                                $('#avatar').attr('src', data.image).css('opacity', '1');
+			                                            }
+			            } else {
+			                $('.btnemail').addClass('submited');
+			                $('#lb-email').css('color', '#f44336').html('Identifiant ou adresse email invalide');
+			                $('.loader').css('display', 'none');
+			                $('#input-email').removeAttr('disabled');
+			            }
+			        },
+			        error: function() {
+			            console.log('Pas de réponse');
+			        }
+			    });
+			
+			}
+			
+			
+			$( ".btnpassword" ).click(function() {
+			    submitPassword();
+			});
+			
+			$('.changelang').click(function() {
+			    let height = $('.select')[0].scrollHeight;
+			    if($('.select').css('height') == '0px') {
+			        $('.select').css('height', height+'px');
+			        $(this).css('border-radius', '5px 5px 0 0');
+			    } else {
+			        $('.select').css('height', '0px');
+			        $(this).css('border-radius', '5px');
+			    }
+			});
+			
+			$(document).click(function(event) {
+			
+			    if (!$(event.target).closest('.select').length && !$(event.target).closest('.changelang').length) {
+			        $('.select').css('height', '0px');
+			        $('.changelang').css('border-radius', '5px');
+			
+			    }
+			});
+			function submitPassword() {
+			    let value = $('#input-password').val();
+			    if(email != null) {
+			        if(checkIsCorrectPassword(value)) {
+			            $('.loader').css('display', 'block');
+			            $('.btnpassword').removeClass('submited');
+			            $('#input-password').attr('disabled', '');
+			            $('#lb-password').css('color', '#888').html('Mot de passe');
+			            var formData = new FormData();
+			            formData.append('password', value);
+			            formData.append('email', email);
+			            formData.append('action', 'valid_session');
+			            $.ajax({
+			                url: '/login',
+			                type: 'POST',
+			                timeout: 10000,
+			                data: formData,
+			                processData: false, // tell jQuery not to process the data
+			                contentType: false, // tell jQuery not to set contentType
+			                success: function(data) {
+			                    data = JSON.parse(data);
+			                    if(data.error == null) {
+			                        window.location = 'https://neronapp.com';
+			                    } else {
+			                        $('.btnpassword').addClass('submited');
+			                        $('#lb-password').css('color', '#f44336').html('Mot de passe incorrect');
+			                        $('.loader').css('display', 'none');
+			                        $('#input-password').removeAttr('disabled');
+			                    }
+			
+			                },
+			                error: function() {
+			                    console.log('Pas de réponse');
+			                }
+			            });
+			
+			        } else {
+			            $('#lb-password').css('color', '#f44336').html('Mot de passe invalide');
+			        }
+			    }
+			}
+			$('#input-email').keypress(function (e) {
+			    var key = e.which;
+			    if(key == 13)  // the enter key code
+			    {
+			        submitEmail();
+			    }
+			});
+			
+			$('#input-password').keypress(function (e) {
+			    var key = e.which;
+			    if(key == 13)  // the enter key code
+			    {
+			        submitPassword();
+			    }
+			});
+			
+			
+		</script>
+	</body>
+</html>
