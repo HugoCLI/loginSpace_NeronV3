@@ -3,9 +3,7 @@
 
 
 > This project is licensed under the property rights of [NeronApp](https://github.com/NeronApp), created and deployed by [HugoHyugo](https://github.com/HugoHyugo)
-> 
 > Creation date : 15/06/2021 (JJ/MM/YYYY)
-> 
 > Deployment date : 16/06/2021 (JJ/MM/YYYY)
 
 
