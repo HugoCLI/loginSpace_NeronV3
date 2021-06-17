@@ -1,14 +1,14 @@
 ### Version 3 of the connection space of the [Neron Platform](https://neronapp.com). Associated Github [NeronApp](https://github.com/NeronApp)
 
-<!-- 
 
-This project is licensed under the property rights of [NeronApp](https://github.com/NeronApp), created and deployed by [HugoHyugo](https://github.com/HugoHyugo)
-Creation date : 15/06/2021 (JJ/MM/YYYY)
-Deployment date : 16/06/2021 (JJ/MM/YYYY)
 
--->
+> This project is licensed under the property rights of [NeronApp](https://github.com/NeronApp), created and deployed by [HugoHyugo](https://github.com/HugoHyugo)
+> Creation date : 15/06/2021 (JJ/MM/YYYY)
+> Deployment date : 16/06/2021 (JJ/MM/YYYY)
 
-TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+
+#### TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
 1. Definitions.
 
